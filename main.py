@@ -9,22 +9,18 @@ from data2aug.aug2coco import gen2aug
 from aug2coco.settings import setConvSettings
 from aug2coco.loader import Loader
 
-AMOUNT = 10
-generator_conf = setGenSettings(samples_path='samples2', dict_output=True)
+AMOUNT = 5
+AUG_TIMES = 2
+
+generator_conf = setGenSettings(samples_path='samples', dict_output=True)
 convertor_conf = setConvSettings(split_type='train/val', split_rate='0.7/0.3', df_input=True)
 loader = Loader(convertor_conf)
 df = pd.DataFrame(columns=['image', 'category', 'bbox', 'segmentation', 'area', 'PIL'])
 
 for i in tqdm(range(AMOUNT), desc="images", colour='red'):
-    bad_pic = True
-    while bad_pic:
-        data = lf.generate_brochure(i+1, generator_conf)
-        aug_data = gen2aug(data)
-        if aug_data:
-            bad_pic = False
+    data = lf.generate_brochure(i + 1, generator_conf)
+    aug_data = gen2aug(data, AUG_TIMES)
 
     df = pd.concat([df, pd.DataFrame.from_dict(aug_data)], ignore_index=False)
 
 loader.load(df)
-
-
