@@ -12,7 +12,7 @@ from aug2coco.loader import Loader
 AMOUNT = 50
 AUG_TIMES = 2
 
-generator_conf = setGenSettings(samples_path='/Users/vika/Desktop/samples_full', dict_output=True)
+generator_conf = setGenSettings(samples_path='samples_full', dict_output=True)
 convertor_conf = setConvSettings(split_type='train/val', split_rate='0.7/0.3', df_input=True)
 loader = Loader(convertor_conf)
 df = pd.DataFrame(columns=['image', 'category', 'bbox', 'segmentation', 'area', 'PIL'])
