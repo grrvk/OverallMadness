@@ -10,7 +10,7 @@ import os
 from PIL import ImageFont
 import numpy as np
 from generator import brochure as br
-
+import time
 
 # -*- coding: utf-8 -*-
 
@@ -20,7 +20,6 @@ def get_entire_text(index, samples_path):
         This function is used to get text that is used to
         generate brochure from random text file
     """
-
     general_path = os.path.join(samples_path, 'sample_text')
     text_files = glob.glob(os.path.join(general_path, '*.txt'))
     text_file = random.choice(text_files)
@@ -35,7 +34,6 @@ def get_str_from_text(file):
     lines = open(file).readlines()
     line = lines[random.randrange(len(lines))]
     return line
-
 
 def write_to_csv(image_name, text_file_name, path_to_csv):
     """
@@ -118,7 +116,6 @@ def get_random_file_path(directory, file_type):
     """
         This function returns path of a randon file of the given type
     """
-
     files = glob.glob(os.path.join(directory, file_type))
     file = random.choice(files)
     return file

@@ -54,8 +54,11 @@ def get_number_of_files_by_type(path, dir_name):
 
 def check_files_size(path, name):
     file = os.path.join(path, name)
-    if not os.path.exists(file) or os.path.getsize(file) == 0:
-        raise Exception(f'File {name} must exist and be not empty')
+    if not os.path.exists(file):
+        raise Exception(f'File {name} must exist')
+    with open(file, 'r') as file_obj:
+        if not file_obj.read(1):
+            raise Exception(f'File {name} must not be empty')
 
 
 class Settings:
@@ -73,8 +76,8 @@ class Settings:
     NEC_SAMPLES_DIRS: list = ['sample_background_images', 'sample_fonts', 'sample_insert_images',
                               'sample_table_fonts', 'sample_text']
     NEC_DATASET_DIRS: list = ['images', 'table_locations']
-    NEC_DATASET_FILES: list = ['content_sentences', 'content_words']
-    DICT_OUTPUT : bool = False
+    NEC_DATASET_FILES: list = ['content_sentences.txt', 'content_words.txt']
+    DICT_OUTPUT: bool = False
 
     def __repr__(self):
         return (f"Config: dataset_path = {self.DATASET_PATH}, \n"

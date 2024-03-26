@@ -160,8 +160,8 @@ def generate_table_params(brochure, block, conf):
     top_margin = int(cell_height * 0.1)
 
     table_font_path = tf.get_random_file_path(os.path.join(conf.SAMPLES_PATH, 'sample_table_fonts'), '*ttf')
-    words_path = os.path.join(conf.SAMPLES_PATH, 'content_words')
-    sentences_path = os.path.join(conf.SAMPLES_PATH, 'content_sentences')
+    words_path = os.path.join(conf.SAMPLES_PATH, 'content_words.txt')
+    sentences_path = os.path.join(conf.SAMPLES_PATH, 'content_sentences.txt')
 
     font_color, background_color = decide_on_coloring_type(brochure, block)
     image = Image.new('RGB', (block.width, block.height), background_color)

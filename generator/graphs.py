@@ -109,8 +109,8 @@ def draw_labels(plot, f_size, samples_path):
         This function is used to draw labels on the plot
     """
 
-    plot.xlabel(tf.get_str_from_text(os.path.join(samples_path, 'content_words')), fontsize=f_size)
-    plot.ylabel(tf.get_str_from_text(os.path.join(samples_path, 'content_words')), fontsize=f_size)
+    plot.xlabel(tf.get_str_from_text(os.path.join(samples_path, 'content_words.txt')), fontsize=f_size)
+    plot.ylabel(tf.get_str_from_text(os.path.join(samples_path, 'content_words.txt')), fontsize=f_size)
     plot.xticks(fontsize=f_size)
     plot.yticks(fontsize=f_size)
 
@@ -152,7 +152,7 @@ def generate_bar_plot(dpi, fig_size, f_size, background_color, temp_image, sampl
     bars = random.randint(3, 6)
     categories = []
     while len(categories) < bars:
-        new_category = (random.choice(tf.get_str_from_text(os.path.join(samples_path, 'content_words')))
+        new_category = (random.choice(tf.get_str_from_text(os.path.join(samples_path, 'content_words.txt')))
                         + str(random.randint(1, 99)))
         if new_category not in categories:
             categories.append(new_category)

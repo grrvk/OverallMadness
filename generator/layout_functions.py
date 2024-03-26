@@ -9,7 +9,7 @@ import os
 from PIL import Image, ImageFont, ImageDraw
 import numpy as np
 from generator import brochure as br, graphs as g, tables as t, text_functions as tf
-
+import time
 
 # -*- coding: utf-8 -*-
 
@@ -51,22 +51,18 @@ def generate_brochure(index, conf):
             bl.font_path = tf.get_random_file_path(os.path.join(conf.SAMPLES_PATH, 'sample_fonts'), '*.ttf')
 
             if choice == 1:
-
                 determine_type_of_image(brochure, bl, index, conf, def_table=True)
 
             elif choice == 2:
-
                 determine_type_of_image(brochure, bl, index, conf)
 
             elif choice == 3:
-
                 text = segments[text_pos]
                 text_pos += 1
                 image_path = tf.get_random_file_path(os.path.join(conf.SAMPLES_PATH, 'sample_insert_images'), '*.jpg')
                 put_text_and_image_in_block(text, brochure, bl, image_path)
 
             elif choice == 4:
-
                 text = segments[text_pos] + segments[text_pos + 1]
                 text_pos += 2
                 header_bl = generate_header_params_for_block(bl, [0.8, 1], [0.17, 0.2],
@@ -85,7 +81,6 @@ def generate_brochure(index, conf):
                 put_text_in_block(main_text, brochure, text_bl, True)
 
             elif choice == 5:
-
                 text = segments[text_pos] + segments[text_pos + 1]
                 text_pos += 2
                 put_text_in_block(text, brochure, bl, True)
@@ -118,7 +113,7 @@ def generate_brochure_layout(width, height):
     for j in range(columns):
         for i in range(rows):
 
-            choice = np.random.choice(np.arange(1, 6), p=[0.05, 0.3, 0.15, 0.2, 0.3])
+            choice = np.random.choice(np.arange(1, 6), p=[0.2, 0.2, 0.1, 0.2, 0.3])
             matrix[i][j] = choice
             if choice in (4, 5):
                 text_blocks_amount += 2
@@ -144,7 +139,7 @@ def determine_type_of_image(brochure, block, index, conf, def_table=False):
         the given block and insert it
     """
 
-    image_choice = np.random.choice(np.arange(1, 4), p=[0.7, 0.2, 0.1])
+    image_choice = np.random.choice(np.arange(1, 4), p=[0.1, 0.1, 0.8])
 
     if def_table or image_choice == 1:
         if conf.DICT_OUTPUT:
@@ -157,7 +152,6 @@ def determine_type_of_image(brochure, block, index, conf, def_table=False):
         insert_path = conf.TEMPORARY_TABLE
 
     elif image_choice == 2:
-
         g.generate_plot(brochure, block, conf)
         insert_path = conf.TEMPORARY_IMAGE
 
