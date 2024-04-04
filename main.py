@@ -12,9 +12,8 @@ from aug2set.loader import Loader
 AMOUNT = 2
 AUG_TIMES = 1
 
-generator_conf = setGenSettings(samples_path='/Users/vika/Desktop/samples_full', dict_output=True)
-convertor_conf = setConvSettings(split_type='train/val', split_rate='0.7/0.3', df_input=True, dataset_type='semantic',
-                                 upload=True, return_path='df_generated')
+generator_conf = setGenSettings(samples_path='SAMPLES PATH', dict_output=True)
+convertor_conf = setConvSettings(split_type='train/val', split_rate='0.7/0.3', df_input=True, dataset_type='semantic')
 df = pd.DataFrame(columns=['image', 'category', 'bbox', 'segmentation', 'area', 'PIL'])
 
 for i in tqdm(range(AMOUNT), desc="images", colour='red'):
