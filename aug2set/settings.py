@@ -106,7 +106,7 @@ class Settings:
 
     def create(self, return_path: str | None):
         print('Creating dataset')
-        dataset_name = f"{os.path.splitext(os.path.basename(self.WORKING_DIR))[0]}_CocoFormat"
+        dataset_name = f"{os.path.splitext(os.path.basename(self.WORKING_DIR))[0]}_Dataset"
         self.DATASET_DIR = os.path.join(return_path, dataset_name) if return_path is not None and os.path.exists(
             return_path) \
             else os.path.join(os.path.dirname(self.WORKING_DIR), dataset_name)

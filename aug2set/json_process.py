@@ -39,7 +39,6 @@ def set_constant(upload: bool, dataset_path: str, df: DataFrame):
     :return: info class dict, categories class list, list of total category dict (new + uploaded if present)
     """
     json_files = _findJsonFolder(os.path.join(dataset_path, 'annotations'))
-
     if upload and len(json_files) != 0:
         with open(os.path.join(os.path.join(dataset_path, 'annotations'), json_files[0]), "r") as json_file:
             json_data = json.load(json_file)
@@ -51,6 +50,7 @@ def set_constant(upload: bool, dataset_path: str, df: DataFrame):
     else:
         categories_json = []
         categories = _setCategories(list(set(df["category"].tolist())), 0)
+    print(categories)
     return _setInfo(), categories, categories + categories_json
 
 
@@ -123,7 +123,7 @@ def _fillJson(settings, df, holder, split_type):
     images = _setImages(settings, df, holder.IMAGE_INDEX, split_type)
     annotations = _setAnnotations(df, holder.CATEGORIES_TOTAL, images, holder.ANNOTATION_INDEX)
 
-    data = JsonFileClass(holder.INFO, holder.CATEGORIES_TOTAL, images, annotations)
+    data = JsonFileClass(holder.INFO, holder.CATEGORIES_NEW, images, annotations)
 
     return data.__dict__
 

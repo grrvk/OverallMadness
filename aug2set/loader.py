@@ -65,13 +65,11 @@ class Loader:
         for image_path in image_paths:
             df_for_image = df[df['image'] == image_path]
             image = df_for_image['PIL'][0]
-            #mask = np.zeros(df_for_image['PIL'].values[0].shape)
 
             class_map = np.zeros_like(image[:, :, 0], dtype=np.uint8)
             instance_map = np.zeros_like(image[:, :, 0], dtype=np.uint8)
 
             for index, row in df_for_image.iterrows():
-                #print(image.shape)
                 mask = Image.new("L", (image.shape[1], image.shape[0]), 0)
 
                 mask = draw_mask(mask, row['segmentation'][0])
@@ -80,14 +78,8 @@ class Loader:
                 class_map[mask > 0] = 1
                 instance_map[mask > 0] = instance_id
 
-            print(np.unique(class_map))
-            print(np.unique(instance_map))
-
             mask_image = np.zeros_like(image, dtype=np.uint8)
             mask_image[:, :, 0] = class_map
             mask_image[:, :, 1] = instance_map
-
-            print(np.unique(mask_image[:, :, 0]))
-            print(np.unique(mask_image[:, :, 1]))
 
             save_semantic(self.SETTINGS.DATASET_DIR, split_type, image_path, image, mask_image)
