@@ -32,6 +32,7 @@ class Settings:
 
     WORKING_DIR: str = None
     DATASET_DIR: str = None
+    DATASET_TYPE: str = None
 
     SPLIT_TYPES: list = []
     SPLIT_RATE: dict = {"train": 0, "val": 0, "test": 0}
@@ -41,6 +42,9 @@ class Settings:
     def __init__(self, **kwargs):
         self.UPLOAD = True if kwargs.get("upload") else False
         self.splitParams(kwargs.get('split_type'), kwargs.get('split_rate'))
+        self.DATASET_TYPE = kwargs.get("dataset_type")
+        if not self.DATASET_TYPE in ['coco', 'semantic']:
+            raise Exception(f'Unknown dataset type. Choose from coco/semantic')
 
         if kwargs.get("df_input"):
             self.dfInput(**kwargs)
@@ -81,10 +85,15 @@ class Settings:
     def create_directories(self, dataset_folder: str, dir_names: list):
         if not self.UPLOAD:
             _mkdir(dataset_folder)
-        if not os.path.exists(os.path.join(dataset_folder, 'annotations')):
-            _mkdir(os.path.join(dataset_folder, 'annotations'))
-        for split_type in dir_names:
-            _mkdir(os.path.join(dataset_folder, split_type))
+        if self.DATASET_TYPE =='coco':
+            if not os.path.exists(os.path.join(dataset_folder, 'annotations')):
+                _mkdir(os.path.join(dataset_folder, 'annotations'))
+            for split_type in dir_names:
+                _mkdir(os.path.join(dataset_folder, split_type))
+        else:
+            for split_type in dir_names:
+                _mkdir(os.path.join(dataset_folder, split_type))
+                _mkdir(os.path.join(dataset_folder, f"mask_{split_type}"))
 
     def load(self, return_path: str | None):
         print('Uploading dataset')
@@ -128,12 +137,12 @@ class Settings:
         self.SPLIT_TYPES = [t for t in list(self.SPLIT_RATE.keys()) if self.SPLIT_RATE.get(f'{t}') != 0]
 
 
-def setConvSettings(split_type: str, split_rate: str, working_dir: str = None, return_path: str = None,
-                upload: bool = False, df_input: bool = False):
-
+def setConvSettings(split_type: str, split_rate: str, dataset_type: str, working_dir: str = None, return_path: str = None,
+                    upload: bool = False, df_input: bool = False):
     return Settings(working_dir=working_dir,
                     return_path=return_path,
                     split_type=split_type,
                     split_rate=split_rate,
                     upload=upload,
-                    df_input=df_input)
+                    df_input=df_input,
+                    dataset_type=dataset_type)

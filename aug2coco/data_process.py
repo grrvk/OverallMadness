@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import json
 import os
-from PIL import Image
+from PIL import ImageDraw
 
 
 def _findJsonZip(path):
@@ -53,10 +53,11 @@ def _loadImages(dr: str):
                     image = np.asarray(bytearray(file.read()), dtype="uint8")
                     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
 
-                    #im = Image.open(file)
-                    #im.load()
+                    # im = Image.open(file)
+                    # im.load()
                     df.at[index, 'PIL'] = image
     return df
+
 
 def _dfSplit(df, rate, starting_idx, last_batch=False):
     """
@@ -69,8 +70,8 @@ def _dfSplit(df, rate, starting_idx, last_batch=False):
     image_names = np.array(list(set(df['image'].tolist())))
 
     if not last_batch:
-        type_images = image_names[starting_idx:starting_idx+int(rate * image_names.size)]
-        last_idx = starting_idx+int(rate * image_names.size)
+        type_images = image_names[starting_idx:starting_idx + int(rate * image_names.size)]
+        last_idx = starting_idx + int(rate * image_names.size)
     else:
         type_images = image_names[starting_idx:]
         last_idx = image_names.size
@@ -90,21 +91,21 @@ def _writeJson(dataset_path, split_type, data, load_type):
     """
     path = os.path.join(os.path.join(dataset_path, 'annotations'), split_type)
     if load_type:
-        if not os.path.exists(path+"_labels.json"):
-            temp = open(path+"_labels.json", "x")
+        if not os.path.exists(path + "_labels.json"):
+            temp = open(path + "_labels.json", "x")
             temp.close()
-        with open(path+"_labels.json", mode='r+', encoding='utf-8') as outfile:
-            previous_data = json.load(outfile) if os.stat(path+"_labels.json").st_size != 0 else {"info": {},
-                                                                                                  "categories": [],
-                                                                                                  "images": [],
-                                                                                                  "annotations": []}
+        with open(path + "_labels.json", mode='r+', encoding='utf-8') as outfile:
+            previous_data = json.load(outfile) if os.stat(path + "_labels.json").st_size != 0 else {"info": {},
+                                                                                                    "categories": [],
+                                                                                                    "images": [],
+                                                                                                    "annotations": []}
             previous_data['info'] = data['info']
             previous_data['categories'].extend(data['categories'])
             previous_data['images'].extend(data['images'])
             previous_data['annotations'].extend(data['annotations'])
             outfile.close()
             data = previous_data
-    with open(path+"_labels.json", "w") as outfile:
+    with open(path + "_labels.json", "w") as outfile:
         json.dump(data, outfile, indent=4, default=str)
         outfile.close()
 
@@ -133,3 +134,14 @@ def load_check_json(path, split_type, upload, df, holder):
     return df, holder
 
 
+def draw_mask(mask, segmentation):
+    ImageDraw.Draw(mask).polygon(segmentation, outline=1, fill=1)
+    return np.array(mask)
+
+
+def save_semantic(dataset, split_type, image_path, image, mask):
+    with open(f"{os.path.join(os.path.join(dataset, split_type), image_path)}", "wb") as f:
+        f.write(cv2.imencode('.png', image)[1].tobytes())
+    with open(f"{os.path.join(os.path.join(dataset, f'mask_{split_type}'), image_path)}", "wb") as f:
+        mask = cv2.cvtColor(mask, cv2.COLOR_BGR2RGB)
+        f.write(cv2.imencode('.png', mask)[1].tobytes())
