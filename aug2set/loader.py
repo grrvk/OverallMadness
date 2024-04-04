@@ -64,7 +64,7 @@ class Loader:
         image_paths = list(set(df['image'].tolist()))
         for image_path in image_paths:
             df_for_image = df[df['image'] == image_path]
-            image = df_for_image['PIL'][0]
+            image = df_for_image['PIL'].values[0]
 
             class_map = np.zeros_like(image[:, :, 0], dtype=np.uint8)
             instance_map = np.zeros_like(image[:, :, 0], dtype=np.uint8)
