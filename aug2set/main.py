@@ -1,7 +1,7 @@
 import pandas as pd
-from aug2coco.settings import Settings
-from aug2coco.data_process import _loadImages
-from aug2coco.loader import Loader
+from aug2set.settings import Settings
+from aug2set.data_process import _loadImages
+from aug2set.loader import Loader
 
 
 def convert_withZip(settings: Settings):

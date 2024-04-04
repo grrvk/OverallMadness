@@ -1,9 +1,9 @@
 import numpy as np
 from PIL import Image
-from aug2coco.settings import Settings
-from aug2coco.data_process import _writeJson, load_check_json, _dfSplit, draw_mask, save_semantic
-from aug2coco.json_process import _fillJson, set_constant
-from aug2coco.schemes import PrevDataInfoHolder
+from aug2set.settings import Settings
+from aug2set.data_process import _writeJson, load_check_json, _dfSplit, draw_mask, save_semantic
+from aug2set.json_process import _fillJson, set_constant
+from aug2set.schemes import PrevDataInfoHolder
 
 
 class Loader:

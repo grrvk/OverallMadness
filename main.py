@@ -6,8 +6,8 @@ from generator import layout_functions as lf
 
 from data2aug.aug2coco import gen2aug
 
-from aug2coco.settings import setConvSettings
-from aug2coco.loader import Loader
+from aug2set.settings import setConvSettings
+from aug2set.loader import Loader
 
 AMOUNT = 2
 AUG_TIMES = 1

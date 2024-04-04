@@ -4,8 +4,8 @@ import numpy as np
 import cv2
 from PIL import Image
 from pandas import DataFrame
-from aug2coco.schemes import InfoClass, CategoryClass, ImageClass, AnnotationClass, JsonFileClass
-from aug2coco.data_process import _findJsonFolder
+from aug2set.schemes import InfoClass, CategoryClass, ImageClass, AnnotationClass, JsonFileClass
+from aug2set.data_process import _findJsonFolder
 
 
 def _setInfo():
