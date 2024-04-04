@@ -64,16 +64,17 @@ class Loader:
         image_paths = list(set(df['image'].tolist()))
         for image_path in image_paths:
             df_for_image = df[df['image'] == image_path]
+            df_for_image.reset_index()
             image = df_for_image['PIL'].values[0]
 
             class_map = np.zeros_like(image[:, :, 0], dtype=np.uint8)
             instance_map = np.zeros_like(image[:, :, 0], dtype=np.uint8)
 
-            for index, row in df_for_image.iterrows():
+            for i, (index, row) in enumerate(df_for_image.iterrows()):
                 mask = Image.new("L", (image.shape[1], image.shape[0]), 0)
 
                 mask = draw_mask(mask, row['segmentation'][0])
-                instance_id = index + 1
+                instance_id = i + 1
 
                 class_map[mask > 0] = 1
                 instance_map[mask > 0] = instance_id
